@@ -7,10 +7,17 @@ const rateLimit = require('express-rate-limit');
 
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
-app.use(rateLimit({
+// Enable trust proxy setting BEFORE initializing rate limiter
+app.set('trust proxy', 1);
+
+// Then configure rate limiter
+const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100 // limit each IP to 100 requests per windowMs
-}));
+});
+
+// Apply rate limiter to all requests
+app.use(limiter);
 
 // Add static file serving middleware
 app.use(express.static(path.join(__dirname, '../')));

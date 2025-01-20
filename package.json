@@ -1,7 +1,7 @@
 {
   "name": "portfolio",
   "version": "2.1.0",
-  "main": "server.js",
+  "main": "js/server.js",
   "scripts": {
     "build": "node js/server.js",
     "start": "node js/server.js",

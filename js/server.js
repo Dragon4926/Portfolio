@@ -12,12 +12,13 @@ app.use(rateLimit({
   max: 100 // limit each IP to 100 requests per windowMs
 }));
 
+// Add Vercel-specific configuration
 app.use(express.static(path.join(__dirname, '../')));
 
-app.use('/static', express.static(path.join(__dirname, '..', 'public')))
-
-app.use('/css', express.static(path.join(__dirname, '..', 'css')))
-app.use('/js', express.static(path.join(__dirname, '..', 'js')))
+// Update static paths
+app.use('/static', express.static(path.join(__dirname, '..', 'public')));
+app.use('/css', express.static(path.join(__dirname, '..', 'css')));
+app.use('/js', express.static(path.join(__dirname, '..', 'js')));
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'public', 'index.html'))
@@ -61,6 +62,11 @@ app.get('/api/pinned-repos', async (req, res) => {
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send('Something broke!');
+});
+
+// Add catch-all route for SPA
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });
 
 const PORT = process.env.PORT || 3000;

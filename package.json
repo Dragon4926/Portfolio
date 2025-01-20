@@ -22,5 +22,8 @@
     "express": "^4.21.0",
     "express-rate-limit": "^6.0.0",
     "helmet": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
   }
 }

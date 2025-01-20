@@ -17,7 +17,7 @@ function initSnow() {
   const vertices = [];
   const textureLoader = new THREE.TextureLoader();
   
-  const sprite = textureLoader.load('/public/snowflake.png');
+  const sprite = textureLoader.load('/snowflake.png');
   
   for (let i = 0; i < 1000; i++) {
     const x = Math.random() * 2000 - 1000;

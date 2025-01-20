@@ -3,6 +3,7 @@
   "version": "2.1.0",
   "main": "server.js",
   "scripts": {
+    "build": "node js/server.js",
     "start": "node js/server.js",
     "dev": "nodemon js/server.js"
   },

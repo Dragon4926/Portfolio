@@ -12,13 +12,13 @@ app.use(rateLimit({
   max: 100 // limit each IP to 100 requests per windowMs
 }));
 
-// Add Vercel-specific configuration
+// Serve static files from root directory
 app.use(express.static(path.join(__dirname, '../')));
 
-// Update static paths
-app.use('/static', express.static(path.join(__dirname, '..', 'public')));
-app.use('/css', express.static(path.join(__dirname, '..', 'css')));
-app.use('/js', express.static(path.join(__dirname, '..', 'js')));
+// Serve specific directories
+app.use('/js', express.static(path.join(__dirname)));
+app.use('/css', express.static(path.join(__dirname, '../css')));
+app.use('/public', express.static(path.join(__dirname, '../public')));
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'public', 'index.html'))
@@ -64,9 +64,9 @@ app.use((err, req, res, next) => {
   res.status(500).send('Something broke!');
 });
 
-// Add catch-all route for SPA
+// Handle SPA routing
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
 const PORT = process.env.PORT || 3000;

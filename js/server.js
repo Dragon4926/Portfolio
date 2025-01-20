@@ -12,10 +12,10 @@ app.use(rateLimit({
   max: 100 // limit each IP to 100 requests per windowMs
 }));
 
-// Serve static files from root directory
+// Add static file serving middleware
 app.use(express.static(path.join(__dirname, '../')));
 
-// Serve specific directories
+// Update specific routes
 app.use('/js', express.static(path.join(__dirname)));
 app.use('/css', express.static(path.join(__dirname, '../css')));
 app.use('/public', express.static(path.join(__dirname, '../public')));
@@ -64,9 +64,9 @@ app.use((err, req, res, next) => {
   res.status(500).send('Something broke!');
 });
 
-// Handle SPA routing
+// SPA fallback
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/index.html'));
+  res.sendFile(path.join(__dirname, '../index.html'));
 });
 
 const PORT = process.env.PORT || 3000;

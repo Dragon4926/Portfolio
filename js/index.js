@@ -1,3 +1,20 @@
+const banner = [
+  '<span class="index">All rights reserved @Dragon4926 | 2024.</span>',
+  "                                                                     ",
+  "  _ .-') _  _  .-')   ('-.                                  .-') _  ",                                   
+  "( (  OO) )( \\( -O )   ( OO ).-.                             ( OO ) )  ",                                  
+  " \\     .'_ ,------.   / . --. /  ,----.      .-'),-----. ,--./ ,--,'   .---.  .----.   .-----.   ,--.   ", 
+  " ,`'--..._)|   /`. '  |  \\-. \\  '   .-./-') ( OO'  .-.  '|   \\ |  |\\  / .  | /  ,.  \\ / ,-.   \\ /  .'    ",
+  " |  |  \\  '|  /  | |.-'-'  |  | |  |_( O- )/    |  | |  ||    \\|  | )/ /|  ||  |  \\  |'-'  |  |.  / -.     ",
+  " |  |   ' ||  |_.' | \\| |_.'  | |  | .--, \\_)   |  |\\|  ||  .     |// / |  |_'  `-'  '   .'  / | .-.  '     ",
+  " |  |   / :|  .  '.'  |  .-.  |(|  | '. (_/  \\  |  | |  ||  |\\    |/  '-'    |`- /  '  .'  /__ ' \\  |  |   ",
+  " |  '--'  /|  |\\  \\   |  | |  | |  '--'  |     `'  '-'  '|  | \\   |`----|  |-' ,'  /  |       |\\  `'  /   ",
+  " `-------' `--' '--'  `--' `--'  `------'        `-----' `--'  `--'     `--'  `---'   `-------' `----'  ",
+  "                                                                     ",
+  '<span class="color2">Welcome to my interactive hecking terminal.</span>',
+  "<span class=\"color2\">For a list of available commands, type</span> <span class=\"command\">'help'</span><span class=\"color2\">.</span>",
+];
+
 var before = document.getElementById("before");
 var liner = document.getElementById("liner");
 var command = document.getElementById("typer");
@@ -9,6 +26,8 @@ var pw = false;
 let pwd = false;
 var commands = [];
 
+const terminalContainer = document.getElementById("terminal");
+
 setTimeout(function () {
   loopLines(banner, "", 80);
   textarea.focus();
@@ -17,8 +36,8 @@ setTimeout(function () {
 window.addEventListener("keyup", enterKey);
 
 console.log(
-  "%Stop stealing my password ☠️",
-  "color: #04ff00; font-weight: bold; font-size: 24px;"
+  "%cStop stealing my password ☠️",
+  `color: var(--text-color); font-weight: bold; font-size: 24px;`
 );
 console.log(
   "%cPassword: '" + password + "' - Allright just take it...",
@@ -28,6 +47,13 @@ console.log(
 //init
 textarea.value = "";
 command.innerHTML = textarea.value;
+
+document.addEventListener('click', function(e) {
+  // Only focus if clicking inside terminal area or command area
+  if (e.target.closest('#terminal') || e.target.closest('#command')) {
+    textarea.focus();
+  }
+});
 
 function enterKey(e) {
   if (e.keyCode == 181) {
@@ -81,79 +107,84 @@ function enterKey(e) {
 }
 
 function commander(cmd) {
-  switch (cmd.toLowerCase()) {
-    case "help":
-      loopLines(help, "color2 margin", 80);
-      break;
-    case "whoami":
-      loopLines(whoami, "color2 margin", 80);
-      break;
-    case "sudo":
-      addLine("Oh no, you're not me...", "color2", 80);
-      setTimeout(function () {
-        window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
-      }, 1000);
-      break;
-    case "social":
-      loopLines(social, "color2 margin", 80);
-      break;
-    case "secret":
-      liner.classList.add("password");
-      pw = true;
-      break;
-    case "projects":
-      loopLines(projects, "color2 margin", 80);
-      break;
-    case "password":
-      addLine(
-        '<span class="inherit"> Lol! You\'re joking, right? As if it would be that easy 🤣</span>',
-        "error",
-        100
-      );
-      break;
-    case "history":
-      addLine("<br>", "", 0);
-      loopLines(commands, "color2", 80);
-      addLine("<br>", "command", 80 * commands.length + 50);
-      break;
-    case "email":
-      const composeUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(email)}`;
-      addLine(
-        `Opening Gmail compose with <a href="${composeUrl}" target="_blank">${email}</a>...`,
-        "color2",
-        80
-      );
-      newTab(composeUrl);
-      break;
-    case "clear":
-      setTimeout(function () {
-        terminal.innerHTML = '<a id="before"></a>';
-        before = document.getElementById("before");
-      }, 1);
-      break;
-    case "banner":
-      loopLines(banner, "", 80);
-      break;
-    // socials
-    case "twitter":
-      addLine("Opening Twitter...", "color2", 0);
-      newTab(twitter);
-      break;
-    case "linkedin":
-      addLine("Opening LinkedIn...", "color2", 0);
-      newTab(linkedin);
-      break;
-    case "github":
-      addLine("Opening GitHub...", "color2", 0);
-      newTab(github);
-      break;
-    default:
-      addLine(
-        '<span class="inherit">Command not found. For a list of commands, type <span class="command">\'help\'</span>.</span>',
-        "error",
-        100
-      );
-      break;
+  try {
+    switch (cmd.toLowerCase()) {
+      case "help":
+        loopLines(help, "color2 margin", 80);
+        break;
+      case "whoami":
+        loopLines(whoami, "color2 margin", 80);
+        break;
+      case "sudo":
+        addLine("Oh no, you're not me...", "color2", 80);
+        setTimeout(function () {
+          window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+        }, 1000);
+        break;
+      case "social":
+        loopLines(social, "color2 margin", 80);
+        break;
+      case "secret":
+        liner.classList.add("password");
+        pw = true;
+        break;
+      case "projects":
+        addLine("Loading projects...", "color2", 0);
+        fetchGitHubPinnedRepos().then(projectsOutput => {
+          loopLines(projectsOutput, "color2 margin", 80);
+        });
+        break;
+      case "password":
+        addLine(
+          '<span class="inherit"> Lol! You\'re joking, right? As if it would be that easy 🤣</span>',
+          "error",
+          100
+        );
+        break;
+      case "history":
+        addLine("<br>", "", 0);
+        loopLines(commands, "color2", 80);
+        addLine("<br>", "command", 80 * commands.length + 50);
+        break;
+      case "email":
+        const recipient = email;
+        const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(recipient)}`;
+        addLine(`Opening Gmail compose... 📧`, "color2", 80);
+        window.open(gmailUrl, '_blank');
+        break;
+      case "clear":
+        setTimeout(function () {
+          terminal.innerHTML = '<a id="before"></a>';
+          before = document.getElementById("before");
+        }, 1);
+        break;
+      case "banner":
+        loopLines(banner, "", 80);
+        break;
+      // socials
+      case "twitter":
+        addLine("Opening Twitter...", "color2", 0);
+        newTab(twitter);
+        break;
+      case "linkedin":
+        addLine("Opening LinkedIn...", "color2", 0);
+        newTab(linkedin);
+        break;
+      case "github":
+        addLine("Opening GitHub...", "color2", 0);
+        newTab(github);
+        break;
+      default:
+        addLine(
+          '<span class="inherit">Command not found. For a list of commands, type <span class="command">\'help\'</span>.</span>',
+          "error",
+          100
+        );
+        break;
+    }
+  } catch (error) {
+    addLine('An error occurred while processing your command', 'error', 0);
+    console.error(error);
   }
 }
 
@@ -189,3 +220,5 @@ function loopLines(name, style, time) {
     addLine(item, style, index * time);
   });
 }
+
+document.getElementById("command").onclick = null;

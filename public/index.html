@@ -5,30 +5,62 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Dragon4926 - Terminal</title>
-    <link rel="stylesheet" type="text/css" media="screen" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/style.css" />
     <link rel="icon" type="image/x-icon" href="../favicon.svg" />
   </head>
   <body>
-    <div id="terminal">
+  </div>      
+  <div id="terminal">
       <a id="before"></a>
     </div>
-    <div id="command" onclick="$('texter').focus();">   
+    <!-- Add this after the terminal div -->
+    <button id="theme-toggle">
+      <span class="theme-text">🌙 Dark</span>
+    </button>
+    <div id="command" class="command-container">   
       <textarea
         type="text"
         id="texter"
         onkeyup="typeIt(this, event)"
-        onkeydown="typeIt(this, event); 
-                   moveIt(this.value.length, event)"
+        onkeydown="typeIt(this, event); moveIt(this.value.length, event)"
         onkeypress="typeIt(this, event);"
         autofocus
-      ></textarea>
-      <div id="liner">
-        <span id="typer"></span><b class="cursor" id="cursor">█</b>
+        ></textarea>
+        <div id="liner">
+          <span id="typer"></span><b class="cursor" id="cursor">█</b>
       </div>
     </div>
-    <script src="../js/index.js"></script>
-    <script src="../js/commands.js"></script>
-    <script src="../js/main.js"></script>
-    <script src="../js/server.js"></script>
+    <!-- Replace cursor container with trail dots -->
+    <div class="cursor-trail">
+      <div class="trail-dot"></div>
+      <div class="trail-dot"></div>
+      <div class="trail-dot"></div>
+      <div class="trail-dot"></div>
+      <div class="trail-dot"></div>
+    </div>
+
+    <!-- Add project grid template -->
+    <template id="project-template">
+      <div class="project-grid">
+        <div class="project-card">
+          <div class="project-thumbnail">
+            <img src="" alt="Project Preview">
+          </div>
+          <div class="project-info">
+            <h3 class="project-title"></h3>
+            <p class="project-description"></p>
+            <a class="project-link" target="_blank">View Project ↗</a>
+          </div>
+        </div>
+      </div>
+    </template>
+    <!-- Update script order -->
+    <script src="/js/index.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/commands.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="/js/snow.js"></script>
+    <script src="/js/cursor-trail.js"></script>
+    <script src="/js/theme.js"></script>
   </body>
-</html>
+  </html>

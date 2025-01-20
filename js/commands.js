@@ -1,20 +1,17 @@
 var twitter = "https://x.com/Dragon4926";
 var password = "1234";
 var linkedin = "https://www.linkedin.com/in/dragon4926/";
-var github = "https://github.com/Dragon4926";
-var email = 'deadeye.040104@gmail.com';
+var github =  "https://github.com/Dragon4926";
+var email = 'deadeye.040104+portfolio@gmail.com'; // Your contact email
 
-whoami = [
+let whoami = [
   "<br>",
   "Hey, I'm Debopriyo!👋",
-  "Passionate Full Stack Web Developer with 3 years of experience designing and implementing innovative web solutions.",
-  "Proficient in both front-end and back-end technologies, adept at creating responsive and user-friendly interfaces.",
-  "Skilled in collaborating with cross-functional teams to deliver high-quality projects within deadlines.",
-  "Continuously exploring emerging technologies and frameworks to stay ahead in the rapidly evolving tech landscape.",
+  "Self-taught software developer with 4+ years of hands-on experience, pursuing a Master's in Computer Science. Skilled in AI, Full-stack development.",
   "<br>"
 ];
 
-social = [
+let social = [
   "<br>",
   'twitter        <a href="' + twitter + '" target="_blank">twitter/Dragon4926' + '</a>',
   'linkedin       <a href="' + linkedin + '" target="_blank">linkedin/dragon4926' + "</a>",
@@ -22,22 +19,21 @@ social = [
   "<br>"
 ];
 
-secret = [
+let secret = [
   "<br>",
   '<span class="command">sudo</span>           Only use if you\'re me ',
   "<br>"
 ];
 
-projects = [
+let projects = [
   "<br>",
   "Most projects are on GitHub, or confidential.",
   "<br>"
 ];
 
-help = [
+let help = [
   "<br>",
   '<span class="command">whoami</span>         Who am I? ya that is what it does',
-
   '<span class="command">social</span>         Display social networks',
   '<span class="command">secret</span>         Find the password',
   '<span class="command">projects</span>       View coding projects',
@@ -49,19 +45,44 @@ help = [
   "<br>",
 ];
 
-banner = [
-  '<span class="index">All rights reserved @Dragon4926 | 2024.</span>',
-  "                                                                     ",
-  "  _ .-') _  _  .-')   ('-.                                  .-') _  ",                                   
-  "( (  OO) )( \\( -O )   ( OO ).-.                             ( OO ) )  ",                                  
-  " \\     .'_ ,------.   / . --. /  ,----.      .-'),-----. ,--./ ,--,'   .---.  .----.   .-----.   ,--.   ", 
-  " ,`'--..._)|   /`. '  |  \\-. \\  '   .-./-') ( OO'  .-.  '|   \\ |  |\\  / .  | /  ,.  \\ / ,-.   \\ /  .'    ",
-  " |  |  \\  '|  /  | |.-'-'  |  | |  |_( O- )/    |  | |  ||    \\|  | )/ /|  ||  |  \\  |'-'  |  |.  / -.     ",
-  " |  |   ' ||  |_.' | \\| |_.'  | |  | .--, \\_)   |  |\\|  ||  .     |// / |  |_'  `-'  '   .'  / | .-.  '     ",
-  " |  |   / :|  .  '.'  |  .-.  |(|  | '. (_/  \\  |  | |  ||  |\\    |/  '-'    |`- /  '  .'  /__ ' \\  |  |   ",
-  " |  '--'  /|  |\\  \\   |  | |  | |  '--'  |     `'  '-'  '|  | \\   |`----|  |-' ,'  /  |       |\\  `'  /   ",
-  " `-------' `--' '--'  `--' `--'  `------'        `-----' `--'  `--'     `--'  `---'   `-------' `----'  ",
-"                                                                     ",
-  '<span class="color2">Welcome to my interactive hecking terminal.</span>',
-  "<span class=\"color2\">For a list of available commands, type</span> <span class=\"command\">'help'</span><span class=\"color2\">.</span>",
-];
+let cachedProjects = null;
+let cacheTime = null;
+
+async function fetchGitHubPinnedRepos() {
+  if (cachedProjects && cacheTime && Date.now() - cacheTime < 3600000) {
+    return cachedProjects;
+  }
+  try {
+    const response = await fetch('/api/pinned-repos');
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    
+    const repos = await response.json();
+    if (!repos || repos.length === 0) {
+      return ["<br>", '<span class="error">No pinned projects found.</span>', "<br>"];
+    }
+
+    cachedProjects = [
+      "<br>",
+      "My Pinned Projects:",
+      "<br>",
+      ...repos.map(repo => [
+        `<div class="project-item">`,
+        `<span class="command">📌 ${repo.name}</span>`,
+        `<span class="color2">${repo.description || 'No description'}</span>`,
+        `<a href="${repo.url}" target="_blank" class="project-link">View on GitHub ↗</a>`,
+        `</div>`
+      ]).flat()
+    ];
+    cacheTime = Date.now();
+    return cachedProjects;
+  } catch (error) {
+    console.error('Fetch error:', error);
+    return ["<br>", `<span class="error">Failed to fetch projects: ${error.message}</span>`, "<br>"];
+  }
+}
+
+// In your commands object, update the projects handler:
+commands.projects = async function(args) {
+  const projectsOutput = await fetchGitHubPinnedRepos();
+  loopLines(projectsOutput, "color2 margin", 80);
+};

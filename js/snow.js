@@ -1,6 +1,11 @@
 let scene, camera, renderer, particles;
 
 function initSnow() {
+  if (typeof THREE === 'undefined') {
+    console.warn('Three.js not loaded, skipping snow effect');
+    return;
+  }
+  
   scene = new THREE.Scene();
   camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
   renderer = new THREE.WebGLRenderer({ alpha: true });
@@ -59,11 +64,16 @@ function animateSnow() {
 }
 
 function onWindowResize() {
+  if (!camera || !renderer) return;
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
 window.addEventListener('resize', onWindowResize, false);
-initSnow();
-animateSnow();
+
+// Wait for DOM to be fully loaded
+document.addEventListener('DOMContentLoaded', () => {
+  initSnow();
+  animateSnow();
+});

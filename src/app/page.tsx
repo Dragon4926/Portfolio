@@ -1,9 +1,14 @@
 import Hero from '@/components/Hero'
 import Terminal from '@/components/Terminal'
+import ProjectsSection from '@/components/ProjectsSection'
+import ThemeToggle from '@/components/ThemeToggle'
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-background">
+      {/* Theme Toggle */}
+      <ThemeToggle />
+      
       {/* Hero Section */}
       <Hero />
       
@@ -24,35 +29,7 @@ export default function Home() {
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="py-20 px-6 bg-secondary/20">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4">
-              Featured Projects
-            </h2>
-            <p className="text-muted-foreground text-lg">
-              Some of my recent work and contributions
-            </p>
-          </div>
-          
-          {/* Project cards would go here */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="glass rounded-lg p-6 hover:scale-105 transition-transform duration-300">
-                <div className="h-48 bg-muted rounded-lg mb-4"></div>
-                <h3 className="text-xl font-semibold mb-2">Project {i}</h3>
-                <p className="text-muted-foreground mb-4">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                </p>
-                <div className="flex gap-2">
-                  <span className="px-2 py-1 bg-primary/20 text-primary text-xs rounded">React</span>
-                  <span className="px-2 py-1 bg-primary/20 text-primary text-xs rounded">TypeScript</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <ProjectsSection />
 
       {/* Skills Section */}
       <section id="skills" className="py-20 px-6">

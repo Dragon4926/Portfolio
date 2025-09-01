@@ -15,6 +15,14 @@ interface TerminalProps {
   className?: string
 }
 
+interface GitHubProject {
+  name: string
+  description?: string
+  stars: number
+  forks: number
+  url: string
+}
+
 const Terminal: React.FC<TerminalProps> = ({ className }) => {
   const [history, setHistory] = useState<TerminalOutput[]>([])
   const [currentInput, setCurrentInput] = useState('')
@@ -66,7 +74,7 @@ const Terminal: React.FC<TerminalProps> = ({ className }) => {
         return [
           'Featured Projects:',
           '',
-          ...repos.map((repo: any) => [
+          ...repos.map((repo: GitHubProject) => [
             `📌 ${repo.name}`,
             `   ${repo.description || 'No description'}`,
             `   🌟 ${repo.stars || 0} stars | 🍴 ${repo.forks || 0} forks`,
@@ -74,7 +82,7 @@ const Terminal: React.FC<TerminalProps> = ({ className }) => {
             ''
           ]).flat()
         ]
-      } catch (error) {
+      } catch {
         return [
           'Failed to fetch projects from GitHub API',
           'Check out my GitHub: https://github.com/Dragon4926',
@@ -103,7 +111,7 @@ const Terminal: React.FC<TerminalProps> = ({ className }) => {
     contact: () => [
       'Contact Information:',
       '  📧 Email: deadeye.040104+portfolio@gmail.com',
-      '  📱 Let\'s connect and build something amazing!',
+      '  📱 Let&apos;s connect and build something amazing!',
       ''
     ],
     clear: () => {

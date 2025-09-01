@@ -53,15 +53,35 @@ const Terminal: React.FC<TerminalProps> = ({ className }) => {
       '  🐱 GitHub:   https://github.com/Dragon4926',
       ''
     ],
-    projects: () => [
-      'Featured Projects:',
-      '  • AI-powered web applications',
-      '  • Full-stack development projects',
-      '  • Open source contributions',
-      '',
-      'Check out my GitHub for more: https://github.com/Dragon4926',
-      ''
-    ],
+    projects: async () => {
+      try {
+        const response = await fetch('/api/pinned-repos')
+        if (!response.ok) throw new Error('Failed to fetch projects')
+        
+        const repos = await response.json()
+        if (!repos || repos.length === 0) {
+          return ['No pinned projects found.', '']
+        }
+
+        return [
+          'Featured Projects:',
+          '',
+          ...repos.map((repo: any) => [
+            `📌 ${repo.name}`,
+            `   ${repo.description || 'No description'}`,
+            `   🌟 ${repo.stars || 0} stars | 🍴 ${repo.forks || 0} forks`,
+            `   🔗 ${repo.url}`,
+            ''
+          ]).flat()
+        ]
+      } catch (error) {
+        return [
+          'Failed to fetch projects from GitHub API',
+          'Check out my GitHub: https://github.com/Dragon4926',
+          ''
+        ]
+      }
+    },
     skills: () => [
       'Technical Skills:',
       '  Languages:   JavaScript, TypeScript, Python, Java',
@@ -113,11 +133,24 @@ const Terminal: React.FC<TerminalProps> = ({ className }) => {
 
     setIsTyping(true)
 
-    const output = commands[trimmedCommand as keyof typeof commands]?.() || [
-      `Command not found: ${trimmedCommand}`,
-      'Type "help" for available commands.',
-      ''
-    ]
+    let output: string[]
+    
+    // Handle async commands
+    if (trimmedCommand === 'projects') {
+      output = await commands.projects()
+    } else {
+      const commandFn = commands[trimmedCommand as keyof typeof commands]
+      if (typeof commandFn === 'function') {
+        const result = commandFn()
+        output = Array.isArray(result) ? result : []
+      } else {
+        output = [
+          `Command not found: ${trimmedCommand}`,
+          'Type "help" for available commands.',
+          ''
+        ]
+      }
+    }
 
     const newEntry: TerminalOutput = {
       id: Date.now().toString(),

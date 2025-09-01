@@ -47,7 +47,7 @@ const Hero: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.8 }}
             >
-              Hey, I'm{' '}
+              Hey, I&apos;m{' '}
               <span className="gradient-text">
                 Debopriyo
               </span>
@@ -71,7 +71,7 @@ const Hero: React.FC = () => {
             transition={{ delay: 0.8, duration: 0.8 }}
           >
             Self-taught software developer with 4+ years of hands-on experience, 
-            pursuing a Master's in Computer Science. I specialize in building 
+            pursuing a Master&apos;s in Computer Science. I specialize in building 
             modern web applications with AI integration and clean, scalable code.
           </motion.p>
 

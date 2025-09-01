@@ -20,7 +20,7 @@ export default function Home() {
               Interactive Terminal
             </h2>
             <p className="text-muted-foreground text-lg">
-              Explore my portfolio through this terminal interface. Type 'help' to get started.
+              Explore my portfolio through this terminal interface. Type &apos;help&apos; to get started.
             </p>
           </div>
           
@@ -67,10 +67,10 @@ export default function Home() {
       <section id="contact" className="py-20 px-6 bg-secondary/20">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl lg:text-4xl font-bold mb-4">
-            Let's Work Together
+            Let&apos;s Work Together
           </h2>
           <p className="text-muted-foreground text-lg mb-8">
-            I'm always open to discussing new opportunities and interesting projects.
+            I&apos;m always open to discussing new opportunities and interesting projects.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

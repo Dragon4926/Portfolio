@@ -1,0 +1,124 @@
+import Hero from '@/components/Hero'
+import Terminal from '@/components/Terminal'
+
+export default function Home() {
+  return (
+    <main className="min-h-screen bg-background">
+      {/* Hero Section */}
+      <Hero />
+      
+      {/* Terminal Section */}
+      <section className="py-20 px-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl lg:text-4xl font-bold mb-4">
+              Interactive Terminal
+            </h2>
+            <p className="text-muted-foreground text-lg">
+              Explore my portfolio through this terminal interface. Type 'help' to get started.
+            </p>
+          </div>
+          
+          <Terminal className="max-w-4xl mx-auto" />
+        </div>
+      </section>
+
+      {/* Projects Section */}
+      <section id="projects" className="py-20 px-6 bg-secondary/20">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl lg:text-4xl font-bold mb-4">
+              Featured Projects
+            </h2>
+            <p className="text-muted-foreground text-lg">
+              Some of my recent work and contributions
+            </p>
+          </div>
+          
+          {/* Project cards would go here */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="glass rounded-lg p-6 hover:scale-105 transition-transform duration-300">
+                <div className="h-48 bg-muted rounded-lg mb-4"></div>
+                <h3 className="text-xl font-semibold mb-2">Project {i}</h3>
+                <p className="text-muted-foreground mb-4">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                </p>
+                <div className="flex gap-2">
+                  <span className="px-2 py-1 bg-primary/20 text-primary text-xs rounded">React</span>
+                  <span className="px-2 py-1 bg-primary/20 text-primary text-xs rounded">TypeScript</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Skills Section */}
+      <section id="skills" className="py-20 px-6">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl lg:text-4xl font-bold mb-4">
+              Technical Skills
+            </h2>
+            <p className="text-muted-foreground text-lg">
+              Technologies I work with
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[
+              { category: 'Frontend', skills: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS'] },
+              { category: 'Backend', skills: ['Node.js', 'Express', 'Python', 'Django'] },
+              { category: 'Database', skills: ['PostgreSQL', 'MongoDB', 'Redis', 'SQLite'] },
+              { category: 'Tools', skills: ['Git', 'Docker', 'AWS', 'Vercel'] },
+            ].map((category, idx) => (
+              <div key={idx} className="space-y-4">
+                <h3 className="text-lg font-semibold text-primary">{category.category}</h3>
+                <ul className="space-y-2">
+                  {category.skills.map((skill, skillIdx) => (
+                    <li key={skillIdx} className="text-muted-foreground">{skill}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="py-20 px-6 bg-secondary/20">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl lg:text-4xl font-bold mb-4">
+            Let's Work Together
+          </h2>
+          <p className="text-muted-foreground text-lg mb-8">
+            I'm always open to discussing new opportunities and interesting projects.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a 
+              href="mailto:deadeye.040104+portfolio@gmail.com"
+              className="inline-flex items-center justify-center px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+            >
+              Get In Touch
+            </a>
+            <a 
+              href="/resume.pdf"
+              className="inline-flex items-center justify-center px-6 py-3 border border-primary text-primary rounded-lg hover:bg-primary hover:text-primary-foreground transition-colors"
+            >
+              Download Resume
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-8 px-6 border-t border-border">
+        <div className="max-w-6xl mx-auto text-center text-muted-foreground">
+          <p>&copy; 2024 Dragon4926. Built with Next.js and Tailwind CSS.</p>
+        </div>
+      </footer>
+    </main>
+  )
+}

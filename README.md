@@ -1,33 +1,34 @@
-# Terminal Portfolio
+# Modern Portfolio
 
-An interactive web-based terminal portfolio with cursor trails, snow effects, and theme switching.
+A modern, interactive portfolio built with Next.js featuring smooth animations, responsive design, and comprehensive sections showcasing skills and projects.
 
 ## Features
 
-- 🖥️ Interactive terminal interface with command history
-- ✨ Custom cursor trail animation
-- ❄️ 3D snow effect using Three.js
-- 🎨 Dark/Light theme toggle
+- 🎨 Modern, clean GUI interface
+- ✨ Smooth animations with Framer Motion
 - 📱 Fully responsive design
 - 🔄 Real-time GitHub projects integration
-- 🔒 Rate limiting and security features
+- 🌙 Dark/Light theme toggle
+- 🚀 Optimized performance with Next.js
+- 💼 Comprehensive About, Projects, Skills, and Contact sections
+- 🎭 Interactive hover effects and transitions
 
-## Available Commands
+## Sections
 
-- `help` - Display available commands
-- `whoami` - About me
-- `social` - Show social media links
-- `projects` - View pinned GitHub projects
-- `email` - Open email composer
-- `history` - View command history
-- `clear` - Clear terminal
-- `banner` - Show welcome banner
+- **Hero** - Animated introduction with typewriter effect
+- **About** - Detailed information with quick facts and cards
+- **Projects** - Showcases featured GitHub repositories with live data
+- **Skills** - Interactive skill categories with visual elements
+- **Contact** - Multiple contact methods with engaging UI
 
 ## Tech Stack
 
-- Frontend: HTML5, CSS3, JavaScript
-- 3D Graphics: Three.js
-- Backend: Express.js, Node.js
+- **Frontend**: Next.js 15, React 19, TypeScript
+- **Styling**: Tailwind CSS with custom CSS variables
+- **Animations**: Framer Motion
+- **Icons**: Lucide React
+- **Backend**: Next.js API Routes
+- **Deployment**: Vercel
 - APIs: GitHub GraphQL API
 - Security: express-rate-limit, helmet
 
@@ -39,34 +40,35 @@ An interactive web-based terminal portfolio with cursor trails, snow effects, an
 npm install
 ```
 
-3. Create a `.env` file with your GitHub token:
+3. Create a `.env.local` file with your GitHub token:
 ```
 GITHUB_TOKEN=your_github_token
 ```
 
-4. Start the server:
-```sh
-npm start
-```
-
-For development:
+4. Start the development server:
 ```sh
 npm run dev
 ```
 
-## Performance Optimizations
-
-Cursor trail animation is optimized using `requestAnimationFrame`:
-
-```javascript
-const optimizedAnimateTrail = () => {
-  let frame;
-  return () => {
-    if (frame) cancelAnimationFrame(frame);
-    frame = requestAnimationFrame(animateTrail);
-  };
-};
+For production build:
+```sh
+npm run build
+npm start
 ```
+
+## Development
+
+The portfolio is built with modern React patterns and includes:
+
+- TypeScript for type safety
+- ESLint and Prettier for code quality
+- Responsive design with Tailwind CSS
+- SEO optimization with Next.js metadata
+- Performance optimization with static generation
+
+## Legacy Terminal Interface
+
+The previous terminal interface has been replaced with a modern GUI. Users accessing the old interface will be automatically redirected to the new experience.
 
 ## License
 

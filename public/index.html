@@ -4,63 +4,80 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Dragon4926 - Terminal</title>
-    <link rel="stylesheet" type="text/css" media="screen" href="/css/style.css" />
-    <link rel="icon" type="image/x-icon" href="/public/favicon.svg" />
+    <title>Dragon4926 - Portfolio</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: linear-gradient(135deg, #0a0f1c 0%, #1a1f2e 100%);
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+        text-align: center;
+      }
+      .container {
+        max-width: 600px;
+        padding: 2rem;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+      h1 { color: #00ff95; margin-bottom: 1rem; }
+      p { margin-bottom: 1.5rem; line-height: 1.6; }
+      .btn {
+        display: inline-block;
+        padding: 12px 24px;
+        background: #00ff95;
+        color: #0a0f1c;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+      .btn:hover {
+        background: #00cc77;
+        transform: translateY(-2px);
+      }
+      .countdown { color: #ff3d87; font-weight: bold; }
+    </style>
+    <script>
+      // Auto redirect after 5 seconds
+      let countdown = 5;
+      const countdownElement = document.createElement('span');
+      
+      function updateCountdown() {
+        if (countdown > 0) {
+          if (document.querySelector('.countdown')) {
+            document.querySelector('.countdown').textContent = countdown;
+          }
+          countdown--;
+          setTimeout(updateCountdown, 1000);
+        } else {
+          window.location.href = '/';
+        }
+      }
+      
+      window.onload = function() {
+        setTimeout(updateCountdown, 1000);
+      };
+    </script>
   </head>
   <body>
-  </div>      
-  <div id="terminal">
-      <a id="before"></a>
+    <div class="container">
+      <h1>Portfolio Updated! 🎉</h1>
+      <p>
+        The terminal interface has been replaced with a modern GUI experience.
+        You'll be automatically redirected to the new portfolio in 
+        <span class="countdown">5</span> seconds.
+      </p>
+      <p>
+        The new portfolio features enhanced sections for about, projects, skills, 
+        and contact information in a beautiful, interactive interface.
+      </p>
+      <a href="/" class="btn">View New Portfolio</a>
     </div>
-    <!-- Add this after the terminal div -->
-    <button id="theme-toggle">
-      <span class="theme-text">🌙 Dark</span>
-    </button>
-    <div id="command" class="command-container">   
-      <textarea
-        type="text"
-        id="texter"
-        onkeyup="typeIt(this, event)"
-        onkeydown="typeIt(this, event); moveIt(this.value.length, event)"
-        onkeypress="typeIt(this, event);"
-        autofocus
-        ></textarea>
-        <div id="liner">
-          <span id="typer"></span><b class="cursor" id="cursor">█</b>
-      </div>
-    </div>
-    <!-- Replace cursor container with trail dots -->
-    <div class="cursor-trail">
-      <div class="trail-dot"></div>
-      <div class="trail-dot"></div>
-      <div class="trail-dot"></div>
-      <div class="trail-dot"></div>
-      <div class="trail-dot"></div>
-    </div>
-
-    <!-- Add project grid template -->
-    <template id="project-template">
-      <div class="project-grid">
-        <div class="project-card">
-          <div class="project-thumbnail">
-            <img src="" alt="Project Preview">
-          </div>
-          <div class="project-info">
-            <h3 class="project-title"></h3>
-            <p class="project-description"></p>
-            <a class="project-link" target="_blank">View Project ↗</a>
-          </div>
-        </div>
-      </div>
-    </template>
-    <!-- Update script order -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="/js/index.js"></script>
-    <script src="/js/main.js"></script>
-    <script src="/js/commands.js"></script>
-    <script src="/js/snow.js"></script>
-    <script src="/js/cursor-trail.js"></script>
-    <script src="/js/theme.js"></script>
   </body>
-  </html>
+</html>

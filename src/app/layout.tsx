@@ -1,31 +1,28 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter_Tight, Instrument_Serif, JetBrains_Mono } from 'next/font/google'
+import { IBM_Plex_Mono, Newsreader } from 'next/font/google'
 import Providers from '@/components/providers/Providers'
-import Preloader from '@/components/Preloader'
-import Cursor from '@/components/Cursor'
 import Nav from '@/components/Nav'
 import { site } from '@/lib/data'
 import './globals.css'
 
-const sans = Inter_Tight({ subsets: ['latin'], variable: '--font-inter-tight', display: 'swap' })
-const serif = Instrument_Serif({
+const serif = Newsreader({
   subsets: ['latin'],
-  weight: '400',
   style: ['normal', 'italic'],
-  variable: '--font-instrument-serif',
+  axes: ['opsz'],
+  variable: '--font-newsreader',
   display: 'swap',
 })
-const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-jetbrains-mono', display: 'swap' })
+const mono = IBM_Plex_Mono({ subsets: ['latin'], weight: ['400', '500'], variable: '--font-plex-mono', display: 'swap' })
 
 const title = `${site.name} — ${site.role}`
 const description =
-  'Portfolio of Debopriyo (Dragon4926) — self-taught software developer with 4+ years of experience building full-stack products and AI-powered systems.'
+  'Portfolio of Debopriyo (Dragon4926) — data scientist turning noisy data into models people can trust. Experiments, method, toolkit and an interactive notebook.'
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || site.url),
   title: { default: title, template: `%s — ${site.name}` },
   description,
-  keywords: ['developer', 'full-stack', 'AI', 'machine learning', 'React', 'Next.js', 'TypeScript', 'portfolio'],
+  keywords: ['data scientist', 'machine learning', 'statistics', 'deep learning', 'NLP', 'Python', 'portfolio'],
   authors: [{ name: site.name, url: 'https://github.com/Dragon4926' }],
   openGraph: {
     title,
@@ -40,21 +37,18 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#0b0b0c',
-  colorScheme: 'dark',
+  themeColor: '#f3f0e8',
+  colorScheme: 'light',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${sans.variable} ${serif.variable} ${mono.variable}`}>
+    <html lang="en" className={`${serif.variable} ${mono.variable}`}>
       <body>
         <Providers>
-          <Preloader />
           <Nav />
           {children}
-          <Cursor />
         </Providers>
-        <div className="grain" aria-hidden />
       </body>
     </html>
   )

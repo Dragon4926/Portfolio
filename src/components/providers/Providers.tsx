@@ -1,21 +1,10 @@
 'use client'
 
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import { MotionConfig } from 'framer-motion'
 import { ReactLenis } from 'lenis/react'
 
-interface IntroState {
-  /** True once the preloader has finished and the page may play its entrance. */
-  ready: boolean
-  setReady: (v: boolean) => void
-}
-
-const IntroContext = createContext<IntroState>({ ready: true, setReady: () => {} })
-
-export const useIntro = () => useContext(IntroContext)
-
 export default function Providers({ children }: { children: ReactNode }) {
-  const [ready, setReady] = useState(false)
   const [reducedMotion, setReducedMotion] = useState(false)
 
   useEffect(() => {
@@ -27,10 +16,8 @@ export default function Providers({ children }: { children: ReactNode }) {
   }, [])
 
   return (
-    <ReactLenis root options={{ lerp: 0.1, smoothWheel: !reducedMotion, anchors: true }}>
-      <IntroContext.Provider value={{ ready, setReady }}>
-        <MotionConfig reducedMotion="user">{children}</MotionConfig>
-      </IntroContext.Provider>
+    <ReactLenis root options={{ lerp: 0.12, smoothWheel: !reducedMotion, anchors: true }}>
+      <MotionConfig reducedMotion="user">{children}</MotionConfig>
     </ReactLenis>
   )
 }

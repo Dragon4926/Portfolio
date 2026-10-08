@@ -1,206 +1,141 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'framer-motion'
+import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion'
 import { useLenis } from 'lenis/react'
-import Magnetic from '@/components/ui/Magnetic'
-import { useIntro } from '@/components/providers/Providers'
-import { navLinks, site, socials } from '@/lib/data'
+import { sections, site, socials } from '@/lib/data'
 import { cn, ease } from '@/lib/utils'
 
 export default function Nav() {
-  const { ready } = useIntro()
   const lenis = useLenis()
-  const { scrollY } = useScroll()
-  const [scrolled, setScrolled] = useState(false)
+  const { scrollYProgress } = useScroll()
+  const progress = useSpring(scrollYProgress, { stiffness: 200, damping: 40 })
+  const [active, setActive] = useState<string | null>(null)
   const [open, setOpen] = useState(false)
 
-  useMotionValueEvent(scrollY, 'change', (v) => setScrolled(v > 160))
-
+  // Scroll-spy: the section crossing the upper third of the viewport is active.
   useEffect(() => {
-    if (!lenis) return
-    if (open) lenis.stop()
-    else lenis.start()
-  }, [open, lenis])
-
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false)
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
+    const els = sections.map((s) => document.getElementById(s.id)).filter(Boolean) as HTMLElement[]
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) if (e.isIntersecting) setActive(e.target.id)
+      },
+      { rootMargin: '-30% 0px -65% 0px' },
+    )
+    els.forEach((el) => io.observe(el))
+    const onTop = () => window.scrollY < 200 && setActive(null)
+    window.addEventListener('scroll', onTop, { passive: true })
+    return () => {
+      io.disconnect()
+      window.removeEventListener('scroll', onTop)
+    }
   }, [])
 
-  const go = (href: string) => {
+  const go = (id: string) => {
     setOpen(false)
-    const target = document.querySelector<HTMLElement>(href)
-    if (!target) return
-    if (lenis) lenis.scrollTo(target, { duration: 1.6, easing: (t) => 1 - Math.pow(1 - t, 4) })
-    else target.scrollIntoView({ behavior: 'smooth' })
+    const el = document.getElementById(id)
+    if (!el) return
+    if (lenis) lenis.scrollTo(el, { offset: -56, duration: 1.4 })
+    else el.scrollIntoView({ behavior: 'smooth' })
   }
 
   return (
-    <>
-      <motion.header
-        className="gutter fixed inset-x-0 top-0 z-50 flex items-center justify-between py-5 mix-blend-difference"
-        initial={{ y: -40, opacity: 0 }}
-        animate={ready ? { y: 0, opacity: 1 } : undefined}
-        transition={{ duration: 1, ease: ease.expo, delay: 0.6 }}
-      >
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-rule bg-paper/85 backdrop-blur-md">
+      <div className="wrap flex h-14 items-center justify-between gap-6">
         <a
           href="#top"
           onClick={(e) => {
             e.preventDefault()
-            go('#top')
+            if (lenis) lenis.scrollTo(0, { duration: 1.4 })
+            else window.scrollTo({ top: 0, behavior: 'smooth' })
           }}
-          className="group flex items-center gap-2 text-sm font-medium text-paper"
-          aria-label="Back to top"
+          className="flex items-baseline gap-2 whitespace-nowrap"
         >
-          <span className="relative block overflow-hidden">
-            <span className="block transition-transform duration-500 ease-[var(--ease-expo)] group-hover:-translate-y-full">
-              © Code by {site.name}
-            </span>
-            <span className="absolute inset-0 translate-y-full transition-transform duration-500 ease-[var(--ease-expo)] group-hover:translate-y-0">
-              © {site.handle}
-            </span>
-          </span>
+          <span className="text-lg italic">{site.name}</span>
+          <span className="meta hidden sm:inline">— {site.role}</span>
         </a>
 
-        <nav
-          className={cn(
-            'hidden items-center gap-8 transition-opacity duration-500 md:flex',
-            scrolled && 'pointer-events-none opacity-0',
-          )}
-        >
-          {navLinks.map((link) => (
+        <nav className="hidden items-center gap-1 lg:flex" aria-label="Sections">
+          {sections.map((s) => (
             <a
-              key={link.href}
-              href={link.href}
+              key={s.id}
+              href={`#${s.id}`}
               onClick={(e) => {
                 e.preventDefault()
-                go(link.href)
+                go(s.id)
               }}
-              className="group relative text-sm text-paper"
+              className={cn(
+                'relative px-2.5 py-1 font-mono text-[11px] transition-colors',
+                active === s.id ? 'text-paper' : 'text-ink-2 hover:text-ink',
+              )}
+              aria-current={active === s.id ? 'true' : undefined}
             >
-              {link.label}
-              <span className="absolute -bottom-1 left-0 h-px w-full origin-right scale-x-0 bg-paper transition-transform duration-500 ease-[var(--ease-expo)] group-hover:origin-left group-hover:scale-x-100" />
+              {active === s.id && (
+                <motion.span
+                  layoutId="nav-active"
+                  className="absolute inset-0 -z-10 bg-blue"
+                  transition={{ type: 'spring', stiffness: 400, damping: 34 }}
+                />
+              )}
+              §{s.n} {s.label}
             </a>
           ))}
         </nav>
 
-        <button
-          onClick={() => setOpen(true)}
-          className={cn('text-sm text-paper transition-opacity md:hidden', scrolled && 'pointer-events-none opacity-0')}
-          aria-expanded={open}
-          aria-controls="site-menu"
-        >
-          Menu
-        </button>
-      </motion.header>
-
-      {/* Floating menu button once the header links are out of view */}
-      <AnimatePresence>
-        {(scrolled || open) && (
-          <motion.div
-            className="fixed right-[var(--gutter)] top-5 z-[70]"
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            exit={{ scale: 0 }}
-            transition={{ duration: 0.45, ease: ease.expo }}
+        <div className="flex items-center gap-4">
+          <a href={socials[0].href} target="_blank" rel="noreferrer" className="link hidden font-mono text-[11px] sm:inline">
+            GitHub ↗
+          </a>
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            className="border border-ink px-2.5 py-1 font-mono text-[11px] lg:hidden"
+            aria-expanded={open}
+            aria-controls="toc"
           >
-            <Magnetic strength={0.4}>
-              <button
-                onClick={() => setOpen((v) => !v)}
-                className={cn(
-                  'flex size-16 items-center justify-center rounded-full border border-line transition-colors duration-500',
-                  open ? 'bg-accent' : 'bg-ink-3 hover:bg-accent',
-                )}
-                aria-label={open ? 'Close menu' : 'Open menu'}
-                aria-expanded={open}
-                aria-controls="site-menu"
-              >
-                <span className="relative block h-3 w-6">
-                  <span
-                    className={cn(
-                      'absolute left-0 top-0 h-px w-full bg-paper transition-transform duration-500',
-                      open && 'translate-y-1.5 rotate-45',
-                    )}
-                  />
-                  <span
-                    className={cn(
-                      'absolute bottom-0 left-0 h-px w-full bg-paper transition-transform duration-500',
-                      open && '-translate-y-1.5 -rotate-45',
-                    )}
-                  />
-                </span>
-              </button>
-            </Magnetic>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            {open ? 'Close' : 'Contents'}
+          </button>
+        </div>
+      </div>
+
+      <motion.div aria-hidden className="h-[2px] origin-left bg-blue" style={{ scaleX: progress }} />
 
       <AnimatePresence>
         {open && (
-          <>
-            <motion.div
-              className="fixed inset-0 z-[55] bg-ink/60 backdrop-blur-sm"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setOpen(false)}
-            />
-            <motion.aside
-              id="site-menu"
-              role="dialog"
-              aria-modal="true"
-              aria-label="Site menu"
-              className="fixed inset-y-0 right-0 z-[60] flex w-full max-w-xl flex-col justify-between bg-ink-3 px-[clamp(1.5rem,6vw,5rem)] pb-10 pt-28"
-              initial={{ x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ duration: 0.8, ease: ease.curtain }}
-            >
-              <div>
-                <p className="label mb-8 border-b border-line pb-6">Navigation</p>
-                <ul className="space-y-2">
-                  {navLinks.map((link, i) => (
-                    <motion.li
-                      key={link.href}
-                      initial={{ x: 80, opacity: 0 }}
-                      animate={{ x: 0, opacity: 1 }}
-                      exit={{ x: 80, opacity: 0 }}
-                      transition={{ duration: 0.8, ease: ease.expo, delay: 0.1 + i * 0.06 }}
-                    >
-                      <a
-                        href={link.href}
-                        onClick={(e) => {
-                          e.preventDefault()
-                          go(link.href)
-                        }}
-                        className="group flex items-center gap-4 text-[clamp(2.5rem,6vw,4.5rem)] font-medium leading-[1.1] tracking-tight"
-                      >
-                        <span className="size-3 scale-0 rounded-full bg-paper transition-transform duration-500 ease-[var(--ease-expo)] group-hover:scale-100" />
-                        <span className="-ml-7 transition-[margin] duration-500 ease-[var(--ease-expo)] group-hover:ml-0">
-                          {link.label}
-                        </span>
-                      </a>
-                    </motion.li>
-                  ))}
-                </ul>
-              </div>
-
-              <div>
-                <p className="label mb-4">Socials</p>
-                <div className="flex flex-wrap gap-6">
-                  {socials.map((s) => (
-                    <a key={s.href} href={s.href} target="_blank" rel="noreferrer" className="text-sm hover:text-accent">
-                      {s.label}
-                    </a>
-                  ))}
-                </div>
-              </div>
-            </motion.aside>
-          </>
+          <motion.nav
+            id="toc"
+            aria-label="Contents"
+            className="overflow-hidden border-t border-rule bg-paper lg:hidden"
+            initial={{ height: 0 }}
+            animate={{ height: 'auto' }}
+            exit={{ height: 0 }}
+            transition={{ duration: 0.5, ease: ease.expo }}
+          >
+            <ol className="wrap py-4">
+              {sections.map((s, i) => (
+                <motion.li
+                  key={s.id}
+                  initial={{ opacity: 0, x: -8 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.05 + i * 0.04 }}
+                >
+                  <a
+                    href={`#${s.id}`}
+                    onClick={(e) => {
+                      e.preventDefault()
+                      go(s.id)
+                    }}
+                    className="flex items-baseline gap-4 border-b border-rule py-3 last:border-0"
+                  >
+                    <span className="w-8 font-mono text-xs text-blue">§{s.n}</span>
+                    <span className="text-2xl">{s.label}</span>
+                  </a>
+                </motion.li>
+              ))}
+            </ol>
+          </motion.nav>
         )}
       </AnimatePresence>
-    </>
+    </header>
   )
 }

@@ -2,97 +2,88 @@
 @import "lenis/dist/lenis.css";
 
 @theme {
-  --color-ink: #0b0b0c;
-  --color-ink-2: #131315;
-  --color-ink-3: #1c1c1f;
-  --color-paper: #edebe6;
-  --color-mute: #8b8a86;
-  --color-line: rgb(237 235 230 / 0.12);
-  --color-accent: #ff5b22;
+  --color-paper: #f3f0e8;
+  --color-paper-2: #ebe7dc;
+  --color-paper-3: #e1dccf;
+  --color-ink: #141413;
+  --color-ink-2: #55524b;
+  --color-ink-3: #8c887e;
+  --color-rule: rgb(20 20 19 / 0.14);
+  --color-blue: #1f3ad6;
+  --color-red: #d63a24;
 
-  --font-sans: var(--font-inter-tight), ui-sans-serif, system-ui, sans-serif;
-  --font-serif: var(--font-instrument-serif), ui-serif, Georgia, serif;
-  --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, monospace;
+  --font-serif: var(--font-newsreader), ui-serif, Georgia, serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, SFMono-Regular, monospace;
+  --font-sans: var(--font-newsreader), ui-serif, Georgia, serif;
 
   --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-curtain: cubic-bezier(0.76, 0, 0.24, 1);
 }
 
 @layer base {
   :root {
-    --gutter: clamp(1.25rem, 4vw, 3.5rem);
+    --gutter: clamp(1.25rem, 4vw, 3rem);
   }
 
   html {
-    background: var(--color-ink);
-    color: var(--color-paper);
-    color-scheme: dark;
+    background: var(--color-paper);
+    color: var(--color-ink);
+    color-scheme: light;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    font-feature-settings: 'kern', 'liga', 'onum';
   }
 
   body {
-    background: var(--color-ink);
-    font-family: var(--font-sans);
+    background: var(--color-paper);
+    font-family: var(--font-serif);
     overflow-x: clip;
   }
 
   ::selection {
-    background: var(--color-accent);
-    color: var(--color-ink);
+    background: var(--color-blue);
+    color: var(--color-paper);
   }
 
   :focus-visible {
-    outline: 1.5px solid var(--color-accent);
-    outline-offset: 4px;
-    border-radius: 2px;
-  }
-
-  /* Custom cursor replaces the native one only on precise pointers */
-  @media (pointer: fine) {
-    html.has-cursor,
-    html.has-cursor a,
-    html.has-cursor button {
-      cursor: none;
-    }
+    outline: 1.5px solid var(--color-blue);
+    outline-offset: 3px;
   }
 }
 
 @layer components {
-  .label {
-    font-family: var(--font-mono);
-    font-size: 0.6875rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--color-mute);
-  }
-
-  .gutter {
+  .wrap {
+    margin-inline: auto;
+    max-width: 1320px;
     padding-inline: var(--gutter);
   }
-}
 
-/* Film grain overlay */
-.grain {
-  pointer-events: none;
-  position: fixed;
-  inset: -50%;
-  z-index: 60;
-  opacity: 0.07;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  animation: grain 0.9s steps(6) infinite;
-}
+  /* Small-caps mono label, used for figure numbers, axes and metadata */
+  .meta {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-ink-2);
+  }
 
-@keyframes grain {
-  0% { transform: translate(0, 0); }
-  20% { transform: translate(-3%, 2%); }
-  40% { transform: translate(2%, -4%); }
-  60% { transform: translate(-4%, -1%); }
-  80% { transform: translate(3%, 3%); }
-  100% { transform: translate(0, 0); }
-}
+  .link {
+    text-decoration-line: underline;
+    text-decoration-color: rgb(20 20 19 / 0.3);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+    transition: text-decoration-color 0.3s, color 0.3s;
+  }
+  .link:hover {
+    color: var(--color-blue);
+    text-decoration-color: var(--color-blue);
+  }
 
-@media (prefers-reduced-motion: reduce) {
-  .grain { animation: none; }
+  /* Faint graph-paper grid for figures */
+  .graph-paper {
+    background-image:
+      linear-gradient(to right, rgb(20 20 19 / 0.055) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(20 20 19 / 0.055) 1px, transparent 1px);
+    background-size: 24px 24px;
+    background-position: -1px -1px;
+  }
 }

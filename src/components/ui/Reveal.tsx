@@ -1,6 +1,6 @@
 'use client'
 
-import { type ElementType, type ReactNode } from 'react'
+import { type ElementType } from 'react'
 import { motion } from 'framer-motion'
 import { cn, ease } from '@/lib/utils'
 
@@ -31,7 +31,7 @@ export function SplitReveal({ text, as: Tag = 'span', className, delay = 0, stag
             <motion.span
               className="inline-block will-change-transform"
               variants={{ hidden: { y: '110%' }, show: { y: '0%' } }}
-              transition={{ duration: 0.9, ease: ease.expo }}
+              transition={{ duration: 0.8, ease: ease.expo }}
             >
               {word}
               {i < words.length - 1 && ' '}
@@ -43,33 +43,12 @@ export function SplitReveal({ text, as: Tag = 'span', className, delay = 0, stag
   )
 }
 
-interface FadeUpProps {
-  children: ReactNode
-  className?: string
-  delay?: number
-  y?: number
-}
-
-export function FadeUp({ children, className, delay = 0, y = 40 }: FadeUpProps) {
-  return (
-    <motion.div
-      className={className}
-      initial={{ opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '0px 0px -10% 0px' }}
-      transition={{ duration: 1, ease: ease.expo, delay }}
-    >
-      {children}
-    </motion.div>
-  )
-}
-
 /** A hairline that draws itself from left to right. */
 export function Rule({ className, delay = 0 }: { className?: string; delay?: number }) {
   return (
     <motion.div
       aria-hidden
-      className={cn('h-px w-full origin-left bg-line', className)}
+      className={cn('h-px w-full origin-left bg-ink', className)}
       initial={{ scaleX: 0 }}
       whileInView={{ scaleX: 1 }}
       viewport={{ once: true }}

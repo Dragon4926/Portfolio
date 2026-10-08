@@ -198,7 +198,7 @@ export default function Experiments({ projects }: { projects: Project[] }) {
       )}
 
       <p className="mt-4 flex flex-wrap justify-between gap-2 font-mono text-[11px] text-ink-3">
-        <span>Source: GitHub API, refreshed hourly.</span>
+        <span>Source: GitHub API, refreshed daily.</span>
         <a href={socials[0].href} target="_blank" rel="noreferrer" className="link">
           Full record → {socials[0].handle}
         </a>

@@ -31,7 +31,7 @@ npm run build && npm start
 | `GITHUB_TOKEN` | Optional. Enables fetching **pinned** repositories via the GraphQL API. Without it the site falls back to the most-starred public repos. |
 | `NEXT_PUBLIC_SITE_URL` | Canonical URL used for metadata and the sitemap. |
 
-Project data is fetched on the server and revalidated hourly (ISR). It is also exposed at `/api/pinned-repos`.
+Project data is fetched on the server and revalidated daily (ISR). It is also exposed at `/api/pinned-repos`.
 
 ## Structure
 

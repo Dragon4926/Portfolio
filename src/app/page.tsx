@@ -7,7 +7,7 @@ import Notebook from '@/components/paper/Notebook'
 import Correspondence from '@/components/paper/Correspondence'
 import { getProjects } from '@/lib/github'
 
-export const revalidate = 3600
+export const revalidate = 86400 // 24h
 
 export default async function Home() {
   const projects = await getProjects()

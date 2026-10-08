@@ -11,7 +11,7 @@ export interface Project {
 }
 
 const USER = 'Dragon4926'
-const REVALIDATE = 3600
+const REVALIDATE = 86400 // 24h
 
 // Subset of GitHub linguist colours, used when the REST fallback is hit.
 const LANGUAGE_COLORS: Record<string, string> = {
